@@ -354,6 +354,17 @@ func searchGitLabGroupsAndUsers(client *gitlab.Client, query string, maxResults 
 		}
 
 		printResults(fmt.Sprintf("GitLab users matching '%s'", query), userUsernames)
+
+		// Save the content of userUsernames to a file called "users.txt"
+		f, err := os.Create("gitlab_users.txt")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer f.Close()
+		for _, user := range userUsernames {
+			f.WriteString(user + "\n")
+		}
 	}
 }
 
