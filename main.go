@@ -208,6 +208,17 @@ func searchGitHubOrganizations(client *github.Client, query string, maxResults i
 	}
 
 	printResults(fmt.Sprintf("GitHub organizations matching '%s'", query), orgLogins)
+	
+	// Save the content of orgLogins to a file called "organizations.txt"
+	f, err := os.Create("github_organizations.txt")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer f.Close()
+	for _, org := range orgLogins {
+		f.WriteString(org + "\n")
+	}
 }
 
 func searchGitHubRepositories(client *github.Client, query string, maxResults int) {
@@ -226,6 +237,17 @@ func searchGitHubRepositories(client *github.Client, query string, maxResults in
 	}
 
 	printResults(fmt.Sprintf("GitHub repositories matching '%s'", query), repoNames)
+
+	// Save the content of repoNames to a file called "repositories.txt"
+	f, err := os.Create("github_repositories.txt")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer f.Close()
+	for _, repo := range repoNames {
+		f.WriteString(repo + "\n")
+	}
 }
 
 func searchGitHubUsers(client *github.Client, query string, maxResults int) {
@@ -244,6 +266,17 @@ func searchGitHubUsers(client *github.Client, query string, maxResults int) {
 	}
 
 	printResults(fmt.Sprintf("GitHub users matching '%s'", query), userLogins)
+
+	// Save the content of userLogins to a file called "users.txt"
+	f, err := os.Create("github_users.txt")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer f.Close()
+	for _, user := range userLogins {
+		f.WriteString(user + "\n")
+	}
 }
 
 func createGitHubClient() (*github.Client, error) {
@@ -295,6 +328,17 @@ func searchGitLabGroupsAndUsers(client *gitlab.Client, query string, maxResults 
 		}
 
 		printResults(fmt.Sprintf("GitLab groups matching '%s'", query), groupFullPaths)
+
+		// Save the content of groupFullPaths to a file called "groups.txt"
+		f, err := os.Create("gitlab_groups.txt")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer f.Close()
+		for _, group := range groupFullPaths {
+			f.WriteString(group + "\n")
+		}
 	}
 
 	users, _, err := client.Users.ListUsers(&gitlab.ListUsersOptions{Search: gitlab.String(query), ListOptions: gitlab.ListOptions{PerPage: maxResults}})
@@ -327,6 +371,17 @@ func searchGitLabProjects(client *gitlab.Client, query string, maxResults int) {
 	}
 
 	printResults(fmt.Sprintf("GitLab projects matching '%s'", query), projectFullPaths)
+
+	// Save the content of projectFullPaths to a file called "projects.txt"
+	f, err := os.Create("gitlab_projects.txt")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer f.Close()
+	for _, project := range projectFullPaths {
+		f.WriteString(project + "\n")
+	}
 }
 
 func createGitLabClient() (*gitlab.Client, error) {
